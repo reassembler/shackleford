@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +33,6 @@ public class Deal extends Activity {
             long clickTime = currentTime - lastClickTime;
 
             if (clickTime < minTimeBetweenCards) {
-                //mOverlayText.setText("Too Soon");
                 return;
             }
 
@@ -40,28 +41,40 @@ public class Deal extends Activity {
             if (deck == null || !deck.hasCard()) {
                 Toast.makeText(Deal.this, "New deck", Toast.LENGTH_SHORT).show();
                 deck = new Deck();
-                mCardText.setVisibility(View.VISIBLE);
             }
 
             int id = deck.getNextCardId();
 
             log.d("showing id: " + id);
 
+            Animation cardFadeOut = new AlphaAnimation(1, .5F);
+            cardFadeOut.setDuration(500);
+            mCardView.setAnimation(cardFadeOut);
+            cardFadeOut.startNow();
+
+
             mCardView.setImageResource(id);
 
-            mLed.setVisibility(View.VISIBLE);
+            Animation cardFadeIn = new AlphaAnimation(.5f, 1f);
+            cardFadeIn.setDuration(500);
+            mCardView.setAnimation(cardFadeIn);
+            cardFadeIn.start();
+
+
+
             mLed.setImageResource(R.drawable.red);
+            Animation animation = new AlphaAnimation(1.0f, 0f);
+            animation.setDuration(minTimeBetweenCards);
+            mLed.setAnimation(animation);
+            animation.start();
 
             mCardText.setText(String.format("%d cards left", deck.getCardsLeft()));
+            animation = new AlphaAnimation(1.0f, 0f);
+            animation.setDuration(5000);
+            mCardText.setAnimation(animation);
 
-            mLed.postDelayed(startTimer, minTimeBetweenCards);
-        }
-    };
+            animation.start();
 
-    public AppTask startTimer = new AppTask() {
-        @Override
-        public void run() {
-            mLed.setVisibility(View.INVISIBLE);
         }
     };
 
@@ -73,7 +86,7 @@ public class Deal extends Activity {
         mCardView = (ImageView) findViewById(R.id.imgCard);
         mCardView.setImageResource(R.drawable.deck);
         mLed = (ImageView) findViewById(R.id.imgLed);
-        mLed.setAlpha(200);
+        mLed.setVisibility(View.INVISIBLE);
         mCardText = (TextView) findViewById(R.id.txtOverLay);
         mCardText.setVisibility(View.INVISIBLE);
 
@@ -92,7 +105,6 @@ public class Deal extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.newDeck:
-                mCardText.setVisibility(View.INVISIBLE);
                 deck = null;
                 mCardView.setImageResource(R.drawable.deck);
 
