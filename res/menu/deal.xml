@@ -4,4 +4,12 @@
           android:icon="@drawable/compass"
           android:title="New Deal" >
     </item>
+    <item android:id="@+id/editPrefs"
+          android:icon="@drawable/compass"
+          android:title="Edit Preferences" >
+    </item>
+    <item android:id="@+id/viewStats"
+          android:icon="@drawable/compass"
+          android:title="View Stats" >
+    </item>
 </menu>

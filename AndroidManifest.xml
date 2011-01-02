@@ -5,12 +5,16 @@
       android:theme="@android:style/Theme.NoTitleBar" android:debuggable="true"
       android:versionName="1.0">
     <application android:label="shackleford" android:icon="@drawable/icon">
-        <activity android:name=".Deal" android:label="@string/app_name">
+        <activity android:name=".Deal"
+                  android:configChanges="orientation"
+                  android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
+        <activity android:name=".DeckStats"/>
+        <activity android:name=".Preferences" android:label="Preferences"/>
     </application>
 </manifest> 
