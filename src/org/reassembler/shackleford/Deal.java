@@ -61,7 +61,7 @@ public class Deal extends Activity {
             int id = card.getResourceId();
 
             if (lastId == id) {
-                Toast.makeText(Deal.this, "Duplicate", Toast.LENGTH_LONG).show();
+                Toast.makeText(Deal.this, "Duplicate", Toast.LENGTH_SHORT).show();
                 playDupeSound.run();
             }
 
@@ -82,19 +82,30 @@ public class Deal extends Activity {
             mCardView.setAnimation(cardFadeIn);
             cardFadeIn.start();
 
+
             mLed.setImageResource(R.drawable.red);
-            Animation animation = new AlphaAnimation(1.0f, 0f);
-            animation.setDuration(minTimeBetweenCards);
-            mLed.setAnimation(animation);
-            animation.start();
+            mLed.setVisibility(View.VISIBLE);
+            mLed.postDelayed(hideRed, minTimeBetweenCards);
+
 
             mCardText.setText(String.format("%d cards left", deck.getCardsLeft()));
-            animation = new AlphaAnimation(1.0f, 0f);
+            Animation animation = new AlphaAnimation(1.0f, 0f);
             animation.setDuration(1000);
             mCardText.setAnimation(animation);
 
             animation.start();
+        }
+    };
 
+    private AppTask hideRed = new AppTask() {
+        @Override
+        public void run() {
+            Animation animation = new AlphaAnimation(1.0f, 0f);
+            animation.setDuration(125);
+
+            mLed.setAnimation(animation);
+            animation.start();
+            mLed.setVisibility(View.INVISIBLE);
         }
     };
 
